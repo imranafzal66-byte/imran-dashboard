@@ -53,16 +53,28 @@ async function loadPrayerTimes() {
     }
 }
 
-// Dollar
-function loadDollar() {
-    document.getElementById("usd").innerHTML =
-        "USD/PKR : 284.75";
+// Live USD / PKR
+async function loadDollar() {
+
+    try {
+
+        const response = await fetch("https://open.er-api.com/v6/latest/USD");
+        const data = await response.json();
+
+        const rate = data.rates.PKR;
+
+        document.getElementById("usd").innerHTML =
+            "💵 USD/PKR: " + rate.toFixed(2);
+
+    } catch (e) {
+
+        document.getElementById("usd").innerHTML =
+            "Unable to load exchange rate.";
+
+    }
+
 }
 
-updateTime();
-setInterval(updateTime, 1000);
-updateGreeting();
-loadPrayerTimes();
 loadDollar();
 async function loadHijriDate() {
 
