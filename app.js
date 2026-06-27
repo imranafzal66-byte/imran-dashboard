@@ -116,11 +116,30 @@ async function loadHijri() {
     }
 }
 
-// Gold (temporary)
-function loadGold() {
-    document.getElementById("gold").innerHTML =
-    "🇵🇰 Pakistan: Rs. 364,000 / tola<br>🌍 International: $3,330 / oz";
+// Live Gold Price
+async function loadGold() {
+
+    try {
+
+        const response = await fetch("https://api.gold-api.com/price/XAU");
+
+        const data = await response.json();
+
+        const price = data.price;
+
+        document.getElementById("gold").innerHTML =
+            "🌍 International: $" + price.toLocaleString() + " / oz";
+
+    } catch (e) {
+
+        document.getElementById("gold").innerHTML =
+            "Unable to load gold price.";
+
+    }
+
 }
+
+loadGold();
 
 // Refresh
 function refreshDashboard(){
